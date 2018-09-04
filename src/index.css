@@ -1,0 +1,26 @@
+body {
+    background-color: #2a2b2d;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color: wheat !important;
+}
+
+a {
+    color: #297c38 !important;
+}
+
+#Panel {
+    background-color: #297c38;
+    text-align: center;
+}
+
+/* button {
+    margin: 5px !important;
+} */
