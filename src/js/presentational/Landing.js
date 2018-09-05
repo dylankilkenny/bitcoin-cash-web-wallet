@@ -21,16 +21,14 @@ export default function Landing({ mnemonic, cashAddr }) {
                 <div>
                   <Link
                     to={{
-                      pathname: '/newwallet',
-                      state: { newWallet: true }
+                      pathname: '/newwallet'
                     }}
                   >
                     <Button>New Wallet</Button>
                   </Link>
                   <Link
                     to={{
-                      pathname: '/wallet',
-                      state: { newWallet: false }
+                      pathname: '/wallet'
                     }}
                   >
                     <Button>Load Existing</Button>

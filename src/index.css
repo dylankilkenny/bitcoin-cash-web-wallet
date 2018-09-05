@@ -24,3 +24,7 @@ a {
 /* button {
     margin: 5px !important;
 } */
+thead,
+tbody {
+    background-color: wheat;
+}

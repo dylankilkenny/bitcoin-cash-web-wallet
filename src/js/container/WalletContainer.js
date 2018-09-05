@@ -8,21 +8,20 @@ let BITBOX = new BITBOXCli();
 class WalletContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      mnemonic: this.props.location.state.mnemonic
+    };
   }
 
   componentDidMount() {
-    console.log(this.props.location.state.newWallet);
-    let mnemonic = BITBOX.Mnemonic.generate(256);
-    let rootSeed = BITBOX.Mnemonic.toSeed(mnemonic);
-    let masterHDNode = BITBOX.HDNode.fromSeed(rootSeed, 'bitcoincash');
+    console.log(this.state.mnemonic);
+    // create seed buffer from mnemonic
+    let seedBuffer = BITBOX.Mnemonic.toSeed(this.state.mnemonic);
+    let masterHDNode = BITBOX.HDNode.fromSeed(seedBuffer, 'bitcoincash');
     let hdNode = BITBOX.HDNode.derivePath(masterHDNode, "m/44'/145'/0'");
     let node0 = BITBOX.HDNode.derivePath(hdNode, '1/0');
     let node0CashAddress = BITBOX.HDNode.toCashAddress(node0);
-    this.setState({
-      mnemonic: mnemonic,
-      cashAddr: node0CashAddress
-    });
+    this.setState({ cashAddr: node0CashAddress });
   }
 
   componentDidCatch(error, info) {

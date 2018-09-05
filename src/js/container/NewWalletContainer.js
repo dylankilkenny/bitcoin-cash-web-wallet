@@ -11,7 +11,7 @@ import {
   Panel,
   Button
 } from 'react-bootstrap';
-
+import { Link } from 'react-router-dom';
 let BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default;
 let BITBOX = new BITBOXCli();
 
@@ -19,7 +19,8 @@ class NewWalletContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mnemonic: ''
+      mnemonic: '',
+      continueDisabled: true
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -34,26 +35,24 @@ class NewWalletContainer extends React.Component {
 
   generateMnemonic = () => {
     let mnemonic = BITBOX.Mnemonic.generate(256);
-    this.setState({ mnemonic: mnemonic });
+    this.setState({
+      mnemonic: mnemonic,
+      continueDisabled: false
+    });
   };
 
   handleChange(e) {
-    this.setState({ mnemonic: e.target.value });
+    let continueDisabled = false;
+    if (this.state.mnemonic.length > 100) {
+      continueDisabled = true;
+    }
+    this.setState({
+      mnemonic: e.target.value,
+      continueDisabled: continueDisabled
+    });
   }
 
-  componentDidMount() {
-    // console.log(this.props.location.state.newWallet);
-    // let mnemonic = BITBOX.Mnemonic.generate(256);
-    // let rootSeed = BITBOX.Mnemonic.toSeed(mnemonic);
-    // let masterHDNode = BITBOX.HDNode.fromSeed(rootSeed, 'bitcoincash');
-    // let hdNode = BITBOX.HDNode.derivePath(masterHDNode, "m/44'/145'/0'");
-    // let node0 = BITBOX.HDNode.derivePath(hdNode, '1/0');
-    // let node0CashAddress = BITBOX.HDNode.toCashAddress(node0);
-    // this.setState({
-    //   mnemonic: mnemonic,
-    //   cashAddr: node0CashAddress
-    // });
-  }
+  componentDidMount() {}
 
   componentDidCatch(error, info) {
     console.log(error);
@@ -95,22 +94,17 @@ class NewWalletContainer extends React.Component {
                         <FormControl.Feedback />
                       </FormGroup>
                     </Form>
-                    {/* <Link
-                      to={{
-                        pathname: '/wallet',
-                        state: { newWallet: true }
-                      }}
-                    >
-                      <Button>New Wallet</Button>
-                    </Link>
                     <Link
+                      replace
                       to={{
                         pathname: '/wallet',
-                        state: { newWallet: false }
+                        state: { mnemonic: this.state.mnemonic }
                       }}
                     >
-                      <Button>Load Existing</Button>
-                    </Link> */}
+                      <Button disabled={this.state.continueDisabled}>
+                        Continue
+                      </Button>
+                    </Link>
                   </div>
                 </Panel.Body>
               </Panel>
